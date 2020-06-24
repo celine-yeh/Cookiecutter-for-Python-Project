@@ -1,0 +1,16 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+bumpversion = "==0.6.0"
+pylint = "==2.5.3"
+pytest = "==5.4.3"
+pytest-cov = "==2.10.0"
+
+[packages]
+click = "==7.1.2"
+
+[requires]
+python_version = "{{ cookiecutter.python_version.split('.')[:-1]|join('.') }}"

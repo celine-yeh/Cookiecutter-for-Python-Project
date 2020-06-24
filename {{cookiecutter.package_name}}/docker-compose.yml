@@ -1,0 +1,14 @@
+version: '3'
+services:
+  app:
+    image: ${APP_IMAGE}
+    stdin_open: true
+    tty: true
+
+  dev:
+    image: ${APP_IMAGE_DEV}
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/workspace
+    command: bash

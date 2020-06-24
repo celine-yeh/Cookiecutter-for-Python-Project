@@ -1,0 +1,5 @@
+*
+!Pipfile
+!Pipfile.lock
+!/{{ cookiecutter.cli_name }}
+!/{{ cookiecutter.package_name }}/
