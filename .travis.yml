@@ -1,0 +1,4 @@
+script:
+  - make build
+  - make test
+  - make lint
