@@ -21,3 +21,7 @@ $ git add .
 $ git commit -m "Basic architecture"
 $ git push -u origin master
 ```
+
+本專案會在 tag 時 push image 至 Docker Hub，所以需要在 Travis CI 加上環境變數：
+
+ - `DOCKER_PASSWORD` ：Docker Hub 密碼或 Token（recommend）

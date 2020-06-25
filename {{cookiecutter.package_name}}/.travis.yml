@@ -1,0 +1,17 @@
+sudo: required
+dist: trusty
+language: python
+services:
+  - docker
+script:
+  - make build
+  - make test
+  - make lint
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  script:
+    - make build && make publish
+  on:
+    tags: true

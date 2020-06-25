@@ -1,4 +1,5 @@
 package_name = {{ cookiecutter.package_name }}
+docker_username = {{ cookiecutter.docker_username }}
 
 docker_opts = \
 	--rm
@@ -10,9 +11,10 @@ pytest_opts = \
 	--cov-report=term \
 	--cov-report=html
 
-image = $(package_name)
-image_base = $(image)_base
-image_dev = $(image)_dev
+VERSION ?= $(shell cat VERSION)
+image = $(docker_username)/$(package_name)
+image_base = $(docker_username)/$(image)_base
+image_dev = $(docker_username)/$(image)_dev
 
 export APP_IMAGE = $(image)
 export APP_IMAGE_DEV = $(image_dev)
@@ -22,9 +24,11 @@ endef
 
 
 build:
+ifndef CI
 	docker build --target base -t $(image_base) .
 ifeq ("$(wildcard Pipfile.lock)","")
 	$(MAKE) lock
+endif
 endif
 	docker build --target dev -t $(image_dev) .
 	docker build -t $(image) .
@@ -53,3 +57,20 @@ ifeq ($(BUMP),)
 	$(error BUMP=major|minor|patch make bump-version)
 endif
 	$(call docker_run_dev,bumpversion $(BUMP))
+
+publish:
+ifdef CI
+ifneq ($(VERSION),$(TRAVIS_TAG))
+	$(error TRAVIS_TAG $(TRAVIS_TAG) != $(VERSION))
+endif
+endif
+ifeq ($(DOCKER_PASSWORD),)
+	$(error DOCKER_PASSWORD=... make publish)
+endif
+	echo $(DOCKER_PASSWORD) | docker login -u $(docker_username) --password-stdin
+	$(eval image_version = $(image):$(VERSION))
+	$(eval image_latest = $(image):latest)
+	docker tag $(image) $(image_version)
+	docker tag $(image) $(image_latest)
+	docker push $(image_version)
+	docker push $(image_latest)

@@ -1,6 +1,7 @@
 {
   "python_version": "3.7.4",
   "version": "0.1.0",
+  "docker_username": "celineyeh",
   "project_name": "Project",
   "package_name": "{{ cookiecutter.project_name|lower|replace(' ', '_') }}",
   "cli_name": "{{ cookiecutter.project_name|lower|replace(' ', '-') }}-cli"
