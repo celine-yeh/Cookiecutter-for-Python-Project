@@ -1,4 +1,5 @@
 ---
+debug: true
 {%- if cookiecutter.use_db|int %}
 mysql:
   host: db

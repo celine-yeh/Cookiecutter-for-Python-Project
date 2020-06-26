@@ -8,6 +8,12 @@ services:
       - ./settings.yml:/workspace/settings.yml
     environment:
       SETTINGS_PATH: /workspace/settings.yml
+{%- if cookiecutter.use_web|int %}
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    command: >
+      gunicorn --bind :${APP_PORT} {{cookiecutter.package_name}}.web
+{%- endif %}
 
   dev:
     image: ${APP_IMAGE_DEV}

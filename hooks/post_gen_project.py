@@ -25,6 +25,12 @@ def remove_db_file():
 
     remove(os.path.join('initdb.d'))
 
-if __name__ == "__main__":
-    if  "{{ cookiecutter.use_db }}" == "0":
+def remove_web_file():
+    remove(os.path.join('{{ cookiecutter.package_name }}', 'web'))
+
+if __name__ == '__main__':
+    if  '{{ cookiecutter.use_db }}' == '0':
         remove_db_file()
+
+    if  '{{ cookiecutter.use_web }}' == '0':
+        remove_web_file()
