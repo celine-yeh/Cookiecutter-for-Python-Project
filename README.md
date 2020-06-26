@@ -22,9 +22,19 @@ $ git commit -m "Basic architecture"
 $ git push -u origin master
 ```
 
-本專案會在 tag 時 push image 至 Docker Hub，所以需要在 Travis CI 加上環境變數：
+## CI / CD
+
+本專案支援 CI / CD，需要在 Travis CI 加上環境變數：
 
  - `DOCKER_PASSWORD` ：Docker Hub 密碼或 Token（recommend）
  - `SETTINGS_FILE` ： `$ base64 settings.yml` ，設定檔內容
 
-Push commit 後可以至 [Travis CI](https://travis-ci.com/) 查看建置、測試、部署情況。 
+![](https://user-images.githubusercontent.com/19619566/85846528-8a570880-b7d8-11ea-902c-c2cd83c06025.png)
+
+Push commit 後可以至 [Travis CI](https://travis-ci.com/) 查看建置、測試、部署情況：
+
+![](https://user-images.githubusercontent.com/19619566/85846734-d99d3900-b7d8-11ea-8c51-9b8f88abece3.png)
+
+Release 後會自動 push image 至 Docker Hub：
+
+![](https://user-images.githubusercontent.com/19619566/85847005-503a3680-b7d9-11ea-9761-290d929af867.png)
