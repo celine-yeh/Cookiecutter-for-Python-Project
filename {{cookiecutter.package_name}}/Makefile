@@ -4,13 +4,16 @@ docker_username = {{ cookiecutter.docker_username }}
 docker_opts = \
 	--rm
 docker_compose_opts = -f docker-compose.yml
+docker_compose_up_opts =
 pytest_opts = \
 	-vvv \
 	--cov=$(package_name) \
 	--cov-branch \
 	--cov-report=term \
-	--cov-report=html
+	--cov-report=html \
+	-m '$(TEST_MARK)'
 
+TEST_MARK ?= not large
 VERSION ?= $(shell cat VERSION)
 image = $(docker_username)/$(package_name)
 image_base = $(docker_username)/$(image)_base
@@ -41,7 +44,10 @@ shell:
 	$(call docker_run_dev,bash)
 
 up:
-	docker-compose $(docker_compose_opts) up
+	docker-compose $(docker_compose_opts) up $(docker_compose_up_opts)
+{%- if cookiecutter.use_db|int %}
+	until docker-compose logs db 2>&1 | grep 'port: 3306  MySQL Community Server (GPL)'; do continue; done
+{%- endif %}
 
 down ps:
 	docker-compose $@
@@ -51,6 +57,10 @@ lint:
 
 test:
 	$(call docker_run_dev,pytest $(pytest_opts) tests)
+
+test-large: TEST_MARK = large
+test-large: docker_compose_up_opts = -d
+test-large: up test down
 
 bump-version:
 ifeq ($(BUMP),)

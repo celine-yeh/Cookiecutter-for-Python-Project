@@ -1,2 +1,2 @@
 [MASTER]
-disable=missing-docstring
+disable=missing-docstring,missing-final-newline,too-few-public-methods

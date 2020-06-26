@@ -3,9 +3,12 @@ dist: trusty
 language: python
 services:
   - docker
+before_script:
+  - echo "$SETTINGS_FILE" | base64 -d > settings.yml
 script:
   - make build
   - make test
+  - make test-large
   - make lint
 
 deploy:

@@ -11,6 +11,9 @@ FROM runtime AS dev
 COPY Pipfile* ./
 RUN pipenv install --system --deploy --dev \
     && rm Pipfile*
+{%- if cookiecutter.use_db|int %}
+RUN apt-get update && apt-get install -y --no-install-recommends mysql-client
+{%- endif %}
 
 FROM runtime AS prod
 COPY . ./

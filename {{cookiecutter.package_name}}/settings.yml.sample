@@ -1,0 +1,8 @@
+---
+{%- if cookiecutter.use_db|int %}
+mysql:
+  host: db
+  username: app
+  password: secret
+  database: app_db
+{%- endif %}
